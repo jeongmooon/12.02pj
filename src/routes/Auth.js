@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { authService, firebaseInstance } from "../fbsae";
+import HomeImage from "../components/img/Home.png"
 
 export default function Auth() {
     const [email, setEmail] =useState("");
@@ -9,7 +10,7 @@ export default function Auth() {
     const [error, setError] = useState("");
 
     //SNS가입
-    const onSnsLogin = (async(event) =>{
+    const onSnsLogin = async function (event) {
         var provider;
         if (event.target.name === "google"){
             provider = new firebaseInstance.auth.GoogleAuthProvider();
@@ -20,7 +21,7 @@ export default function Auth() {
         }
         const data = await authService.signInWithPopup(provider);
         console.log(data);
-    })
+    };
 
     const onSubmit = (async(event)=>{
         event.preventDefault();
@@ -62,48 +63,53 @@ export default function Auth() {
         }
     })
 
-    return(      
+    return(
         <div>
-            <p style={{ color: "red" }}>{error}</p>  
-            <h4>로그인</h4>
-            <form id="loginForm" onSubmit={onSubmit}>
-                <input type="email" name="email" value={email} onChange={onChange} />
-                <input type="password" name="password" value={password} onChange={onChange} />
-                <input type="submit" value="로그인" />
-            </form>
-            <div>
-            <button name="google" onClick={onSnsLogin}>
-                Google Login
-            </button>
-            <br />
-            <button name="github" onClick={onSnsLogin}>
-                GitHub Login
-            </button>
-            <button name="facebook" onClick={onSnsLogin}>
-                FaceBook Login
-            </button>
+            <div className="row">
+                <img className="mainImg" src={HomeImage} alt="" />
+            </div>      
+            <div className="authForm">
+                <p style={{ color: "red" }}>{error}</p>  
+                <h4>로그인</h4>
+                <form id="loginForm" onSubmit={onSubmit}>
+                    <input type="email" name="email" value={email} onChange={onChange} />
+                    <input type="password" name="password" value={password} onChange={onChange} />
+                    <input type="submit" value="로그인" />
+                </form>
+                <div>
+                <button name="google" onClick={onSnsLogin}>
+                    Google Login
+                </button>
+                <br />
+                <button name="github" onClick={onSnsLogin}>
+                    GitHub Login
+                </button>
+                <button name="facebook" onClick={onSnsLogin}>
+                    FaceBook Login
+                </button>
+                </div>
+                <hr />
+                <h4>회원가입</h4>
+                <form id="joinUsForm" onSubmit={onSubmit}>
+                    이메일 : {" "}
+                    <input 
+                        tpye="email" 
+                        name="nEmail" 
+                        value={nEmail} 
+                        placeholder="이메일 입력하세요"
+                        onChange={onNChange}
+                    />
+                    <br />
+                    <input
+                        type="password"
+                        name="nPassword"
+                        value={nPassword}
+                        onChange={onNChange}
+                    />
+                    <br />
+                    <input type="submit" value="회원가입" />
+                </form>
             </div>
-            <hr />
-            <h4>회원가입</h4>
-            <form id="joinUsForm" onSubmit={onSubmit}>
-                이메일 : {" "}
-                <input 
-                    tpye="email" 
-                    name="nEmail" 
-                    value={nEmail} 
-                    placeholder="이메일 입력하세요"
-                    onChange={onNChange}
-                />
-                <br />
-                <input
-                    type="password"
-                    name="nPassword"
-                    value={nPassword}
-                    onChange={onNChange}
-                />
-                <br />
-                <input type="submit" value="회원가입" />
-            </form>
         </div>
     )
 }
